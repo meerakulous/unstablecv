@@ -92,10 +92,10 @@ It simulates an outcome that is a linear combination of two features:
 <li> one consistently predictive over time (the <strong>stable feature</strong>)
 <li> one only occasionally predictive (the <strong>unstable feature</strong>)
 </ul>
-It then compares the expected MSE estimated by different CV strategies—<strong>random CV</strong>, <strong>block CV</strong>, and <strong>our proposed approach (|block CV output - random CV output|)</strong> of 
+It then compares the expected MSE estimated by different CV strategies—<strong>random CV</strong>, <strong>block CV</strong>, and <strong>our proposed approach (|block CV output - random CV output|)</strong> of two linear models: 
 <ul>
-<li> a model that only uses the stable feature (<b>the stable model</b>) to predict the outcome 
-<li> a model that only uses the unstable feature (<b>the unstable model</b>) 
+<li> one that only uses the stable feature (<b>the stable model</b>) to predict the outcome 
+<li> one that only uses the unstable feature (<b>the unstable model</b>) to predict the outcome 
 </ul>
 Random and block CV often estimate the unstable model as having a lower MSE than the stable model, resulting in models that will fail over time. On the other hand our method avoids this pitfall and provides more reliable model selection. To play with this demo, click the sliding bars for 
 <ul> 
