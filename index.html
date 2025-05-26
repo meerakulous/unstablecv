@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <title>Cross-validation for Longitudinal Datasets</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
   <style>
     * {
       box-sizing: border-box;
@@ -81,7 +85,26 @@
   <div class="header">
     <div class="title">Cross-validation for Longitudinal Datasets with Unstable Correlations</div>
     <div class="description">
-      This demo is based on the KDD 2025 paper <em>"Cross-Validation for Longitudinal Datasets with Unstable Correlations"</em>. It simulates an outcome using two features: one consistently predictive over time (the <strong>stable feature</strong>) and another occasionally predictive (the <strong>unstable feature</strong>). Different cross-validation strategies—<strong>random CV</strong>, <strong>block CV</strong>, and <strong>our proposed method</strong>—are compared. Random and block CV may underestimate the unstable model’s error and favor it, while our method avoids this pitfall and provides more reliable model selection.
+      This demo is based on the KDD 2025 paper <em>"Cross-Validation for Longitudinal Datasets with Unstable Correlations"</em>. <br> 
+
+It simulates an outcome that is a linear combination of two features: 
+<ul>
+<li> one consistently predictive over time (the <strong>stable feature</strong>)
+<li> one only occasionally predictive (the <strong>unstable feature</strong>)
+</ul>
+It then compares the expected MSE estimated be different CV strategies—<strong>random CV</strong>, <strong>block CV</strong>, and <strong>our proposed approach (|block CV output - random CV output|)</strong> of 
+<ul>
+<li> a model that only uses the stable feature (<b>the stable model</b>) to predict the outcome 
+<li> a model that only uses the unstable feature (<b>the unstable model</b>) 
+</ul>
+Random and block CV often estimate the unstable model as having a lower MSE than the stable model, resulting in models that will fail over time. On the other hand our method avoids this pitfall and provides more reliable model selection. To play with this demo, click the sliding bars for 
+<ul> 
+<li> a: the coefficient associated with the stable feature
+<li> b: the coefficient associated with the unstable feature
+<li> A<sub>u</sub>: the average proportion of training data where the unstable feature and outcome are associated
+<li> V<sub>u</sub>: the average proportion of training data where the unstable feature and outcome are associated
+</u> 
+
     </div>
   </div>
 
@@ -96,11 +119,11 @@
         <input type="range" id="b" min="0.1" max="10" step="0.1" oninput="generatePlots()">
       </div>
       <div class="slider-group">
-        <div class="slider-label">A_u: <span id="val-Au" class="slider-value"></span></div>
+        <div class="slider-label">A<sub>u</sub>: <span id="val-Au" class="slider-value"></span></div>
         <input type="range" id="Au" min="0.01" max="1.00" step="0.01" oninput="generatePlots()">
       </div>
       <div class="slider-group">
-        <div class="slider-label">V_u: <span id="val-Vu" class="slider-value"></span></div>
+        <div class="slider-label">V<sub>u</sub>: <span id="val-Vu" class="slider-value"></span></div>
         <input type="range" id="Vu" min="0.0001" max="1" step="0.0001" oninput="generatePlots()">
       </div>
       <div class="plot-label">Strength of unstable vs. stable correlation</div>
@@ -110,7 +133,7 @@
       </div>
       <div style="display: flex; justify-content: center; gap: 1rem; font-size: 0.9rem; margin-top: 0.5rem;">
         <div><span style="color: blue; font-weight: bold;">■</span> Stable (a)</div>
-        <div><span style="color: orange; font-weight: bold;">■</span> Unstable (bp<sub>u</sub>)</div>
+        <div><span style="color: orange; font-weight: bold;">■</span> Unstable (bp<sub>u</sub><sup>(t)</sup>)</div>
       </div>
     </div>
 
@@ -167,7 +190,7 @@ ctxLeft.clearRect(0, 0, ctxLeft.canvas.width, ctxLeft.canvas.height);
   ctxLeft.font = '12px Arial';
   ctxLeft.fillText('0', 5, ctxLeft.canvas.height - 10);
   ctxLeft.fillText('t', ctxLeft.canvas.width - 10, ctxLeft.canvas.height - 15);
-  ctxLeft.fillText('bpₜ, a', 35, 10);
+  ctxLeft.fillText('Coefficient x Proportion Appearance', 35, 10);
     // Compute y scaling based on a and bp_t
   const minY = Math.min(a, ...pu.map(p => b * p));
   const maxY = Math.max(a, ...pu.map(p => b * p));
@@ -278,4 +301,3 @@ ctxLeft.clearRect(0, 0, ctxLeft.canvas.width, ctxLeft.canvas.height);
   </script>
 </body>
 </html>
-
